@@ -1,12 +1,3 @@
-// 不安全方法 不要用
-export const getFilterValue = (ar, key, tar) => {
-    try {
-        return ar.filter((v) => v[key] === tar)[0];
-    } catch (e) {
-        return [];
-    }
-}
-
 const type = (tar) => {
     return Object.prototype.toString.call(tar).slice(8, -1);
 }
@@ -44,14 +35,16 @@ export const typeUtil = {
     isBoolean(tar) { return type(tar) === 'Boolean' }
 }
 
-const typeCollection = {
-    'appointType': ['出租', '出售'],
-    'appointStatus': ['待确认', '待带看', '跟进中', '已关闭'],
-    'resource': ['一键建站', '中介端'],
-    'recordType': ['园区跟进', '中介跟进'],
-    'flagUse': ['否', '是'],
-    'flagFirst': ['否', '是']
-};
+/*
+    const typeCollection = {
+        'appointType': ['出租', '出售'],
+        'appointStatus': ['待确认', '待带看', '跟进中', '已关闭'],
+        'resource': ['一键建站', '中介端'],
+        'recordType': ['园区跟进', '中介跟进'],
+        'flagUse': ['否', '是'],
+        'flagFirst': ['否', '是']
+    };
+*/
 
 export const normalizeType = (tar) => {
     if (!tar.length) { return; }
