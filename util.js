@@ -7,22 +7,22 @@ export const clearOption = (tar) => {
         let v = tar[key];
         switch (type(v)) {
             case 'String':
-                v = '';
+                tar[key] = '';
                 break;
             case 'Number':
-                v = 0;
+                tar[key] = 0;
                 break;
             case 'Array':
-                v = [];
+                tar[key] = [];
                 break;
             case 'Boolean':
-                v = false;
+                tar[key] = false;
                 break;
             case 'Object':
-                v = {};
+                tar[key] = {};
                 break;
             default:
-                v = null;
+                tar[key] = null;
         }
     }
 }
