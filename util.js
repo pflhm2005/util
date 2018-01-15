@@ -1,6 +1,4 @@
-const type = (tar) => {
-    return Object.prototype.toString.call(tar).slice(8, -1);
-}
+const type = (tar) => Object.prototype.toString.call(tar).slice(8, -1);
 
 /* ----------------------------------------------- 表单清空 --------------------------------------------- */
 
