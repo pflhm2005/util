@@ -55,7 +55,8 @@ const typeCollection = {
 
 export const normalizeType = (tar) => {
     if (!tar.length) { return; }
-    tar.forEach(v => Object.keys(tar[0]).filter(key => Object.keys(typeCollection).indexOf(key) >= 0).forEach(key => v[`$ref_${key}`] = typeCollection[key][v[key]]));
+    let resolveType = Object.keys(tar[0]).filter(key => Object.keys(typeCollection).indexOf(key) >= 0);
+    tar.forEach(v => resolveType.forEach(key => v[`$ref_${key}`] = typeCollection[key][v[key]]));
 };
 
 // 内部使用
