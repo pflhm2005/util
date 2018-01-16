@@ -56,6 +56,18 @@ export const normalizeType = (tar) => {
     tar.forEach(v => resolveType.forEach(key => v[`$ref_${key}`] = typeCollection[key][v[key]]));
 };
 
+/* ----------------------------------------------- 日期切割 --------------------------------------------- */
+
+export const normalizeDate = (tar, key) => {
+    tar.forEach(v => {
+        key.forEach(v2 => {
+            let tmp = v[v2].split(' ');
+            v['y_' + v2] = tmp[0];
+            v['t_' + v2] = tmp[1];
+        });
+    });
+};
+
 /* ----------------------------------------------- element-ui表单正则 --------------------------------------------- */
 
 export const elRegFnGenerator = {
@@ -126,7 +138,7 @@ export const elRegFnGenerator = {
     }
 }
 
-// 内部使用
+/* ----------------------------------------------- 自定义table(略) --------------------------------------------- */
 export const transformRoomTable = (u) => {
     let curIter = 0,
         iter = -1,
