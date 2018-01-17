@@ -52,8 +52,8 @@ export const typeUtil = {
 
 export const normalizeType = (tar) => {
     if (!tar.length) { return; }
-    let resolveType = Object.keys(tar[0]).filter(key => Object.keys(typeCollection).indexOf(key) >= 0);
-    tar.forEach(v => resolveType.forEach(key => v[`$ref_${key}`] = typeCollection[key][v[key]]));
+    let resolveType = Object.keys(tar[0]).filter(key => Reflect.has(typeCollection, key));
+    tar.forEach(v => resolveType.forEach(key => v[`$ref_${key}`] = v[key] === null ? null : typeCollection[key][v[key]]));
 };
 
 /* ----------------------------------------------- 日期切割 --------------------------------------------- */
