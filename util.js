@@ -16,7 +16,7 @@ export const clearOption = (tar) => {
                 tar[key] = [];
                 break;
             case 'Boolean':
-                tar[key] = false;
+                tar[key] = null;
                 break;
             case 'Object':
                 tar[key] = {};
@@ -71,33 +71,30 @@ export const normalizeDate = (tar, key) => {
 /* ----------------------------------------------- element-ui表单正则 --------------------------------------------- */
 
 export const elRegFnGenerator = {
-    double_reg(n) {
-        const reg = /^[1-9]{1}[0-9]*(?:\.[0-9]{1,4})?$|^0\.[0-9]{1,4}$/;
+    number_reg(m, n, msg) {
+        const reg = new RegExp(`^[1-9]{1}[0-9]{0,${m-1}}(?:\\.[0-9]{1,${n}})?$|^0\\.[0-9]{1,${n}}$`);
         return (rule, value, callback) => {
-            if (!reg.test(value)) {
-                return callback(new Error('请输入正整数或至多4位小数正整数'));
-            }
-            if (String(value).length > n) {
-                return callback(new Error('长度为1-' + n + '位'));
-            }
+            if (msg && !value) { return callback(new Error(msg)); }
+            if (!msg && !value) { return callback(); }
+            if (!reg.test(value)) { return callback(new Error(`请输入至多${m}位正整数，小数最多${n}位`)); }
             callback();
         }
     },
-    unsigned_int_reg(n) {
-        const reg = new RegExp('^' + '\\d{1,' + n + '}' + '$');
+    unsigned_number_reg(n) {
+        const reg = new RegExp(`^[1-9]{1}[0-9]{0,${n-1}}$`);
         return (rule, value, callback) => {
-            if (!reg.test(value)) {
-                return callback(new Error('请输入1-' + n + '位正整数'));
-            }
+            if (!value && !rule.required)
+                return callback();
+            else if (!reg.test(value))
+                return callback(new Error(`请输入至多${n}位正整数`));
             callback();
         }
     },
-    signed_int_reg(n) {
-        const reg = new RegExp('^' + '-?\\d{1,' + n + '}' + '$');
+    percentage_reg() {
+        const reg = /^(100|[0-9]{0,2})$/;
         return (rule, value, callback) => {
-            if (!reg.test(value)) {
-                return callback(new Error('请输入1-' + n + '位整数'));
-            }
+            if (!value) { callback() }
+            if (!reg.test(value)) { return callback(new Error('请输入0-100的整数')); }
             callback();
         }
     },
@@ -113,9 +110,8 @@ export const elRegFnGenerator = {
     phone_reg() {
         const reg = /^[1][3,4,5,7,8][0-9]{9}$|^(?:0[0-9]{2,3}-)?[2-9][0-9]{7}(?:-[0-9]{1,4})?$|^400[0-9]{7}$/;
         return (rule, value, callback) => {
-            if (!reg.test(value)) {
-                return callback(new Error('请输入正确的电话号码'));
-            }
+            if (!value) { return callback(new Error('请输入电话号码')); }
+            if (!reg.test(value)) { return callback(new Error('电话号码格式错误')); }
             callback();
         }
     },
@@ -128,14 +124,6 @@ export const elRegFnGenerator = {
             callback();
         }
     },
-    checkbox_empty() {
-        return (rule, value, callback) => {
-            if (!value[0]) {
-                return callback(new Error('请选择'));
-            }
-            callback();
-        }
-    }
 }
 
 /* ----------------------------------------------- 自定义table(略) --------------------------------------------- */
