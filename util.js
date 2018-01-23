@@ -27,6 +27,16 @@ export const clearOption = (tar) => {
     }
 }
 
+/* ---------------------------------------------- 设置默认值 --------------------------------------------- */
+
+export const setDefaultValue = (tar,defaultObj={}) => {
+    for (let key in tar) {
+        let v = tar[key];
+        if (!v) { tar[key] = '--'; }
+    }
+    return Object.assign({},tar,defaultObj);
+};
+
 /* ----------------------------------------------- 类型判断 --------------------------------------------- */
 
 export const typeUtil = {
