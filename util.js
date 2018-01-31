@@ -30,6 +30,10 @@ export const clearOption = (tar) => {
 /* ---------------------------------------------- 设置默认值 --------------------------------------------- */
 
 export const setDefaultValue = (tar,defaultObj = {},defaultValue = '--') => {
+    if(typeof defaultObj !== 'object'){
+        defaultValue = defaultObj;
+        defaultObj = {};
+    }
     for (let key in tar) {
         let v = tar[key];
         if (!v) { tar[key] = defaultValue; }
