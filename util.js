@@ -10,7 +10,7 @@ export const clearOption = (tar) => {
                 tar[key] = '';
                 break;
             case 'Number':
-                tar[key] = 0;
+                tar[key] = -1;
                 break;
             case 'Array':
                 tar[key] = [];
@@ -70,11 +70,9 @@ export const normalizeType = (tar) => {
 
 export const normalizeDate = (tar, key) => {
     tar.forEach(v => {
-        key.forEach(v2 => {
-            let tmp = v[v2].split(' ');
-            v['y_' + v2] = tmp[0];
-            v['t_' + v2] = tmp[1];
-        });
+        let tmp = v[key].split(' ');
+        v[`$ref_${key}_day`] = tmp[0];
+        v[`$ref_${key}_time`] = tmp[1];
     });
 };
 
