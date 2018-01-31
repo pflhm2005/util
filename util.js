@@ -29,10 +29,10 @@ export const clearOption = (tar) => {
 
 /* ---------------------------------------------- 设置默认值 --------------------------------------------- */
 
-export const setDefaultValue = (tar,defaultObj={}) => {
+export const setDefaultValue = (tar,defaultObj = {},defaultValue = '--') => {
     for (let key in tar) {
         let v = tar[key];
-        if (!v) { tar[key] = '--'; }
+        if (!v) { tar[key] = defaultValue; }
     }
     return Object.assign({},tar,defaultObj);
 };
@@ -58,12 +58,24 @@ export const typeUtil = {
         'flagUse': ['否', '是'],
         'flagFirst': ['否', '是']
     };
+    Example:
+    obj = {
+        appointType:0,
+        appointStatus:1
+    }
+    After normalize:
+    obj = {
+        $ref_appointType:'出租',
+        $ref_appointStatus:'待带看',
+        appointType:0,
+        appointStatus:1
+    }
 */
 
-export const normalizeType = (tar) => {
+export const normalizeType = (tar,prefix = '$ref_') => {
     if (!tar.length) { return; }
     let resolveType = Object.keys(tar[0]).filter(key => Reflect.has(typeCollection, key));
-    tar.forEach(v => resolveType.forEach(key => v[`$ref_${key}`] = v[key] === null ? null : typeCollection[key][v[key]]));
+    tar.forEach(v => resolveType.forEach(key => v[`${prefix}${key}`] = v[key] === null ? null : typeCollection[key][v[key]]));
 };
 
 /* ----------------------------------------------- 日期切割 --------------------------------------------- */
