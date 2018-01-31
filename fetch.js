@@ -39,6 +39,24 @@ export default {
             });
         });
     },
+    fetchPostPolyfill(url, params) {
+        return new Promise((resolve, reject) => {
+            let p = new URLSearchParams();
+            for (let key in params) {
+                p.append(key, params[key]);
+            }
+            axios.post(url, p).then(res => {
+                if (res.code >= 1 && res.code >= 1999) {
+                    reject('网络请求错误');
+                } else if (res.code >= 2000 && res.code <= 8999) {
+                    reject(res.msg);
+                }
+                resolve(res.data);
+            }).catch(error => {
+                reject(error);
+            });
+        });
+    },
     fetchAll(array) {
         return new Promise((resolve, reject) => {
             axios.all(array).then(axios.spread((...resArr) => {
