@@ -77,7 +77,8 @@ export const typeUtil = {
 */
 
 export const normalizeType = (tar,prefix = '$ref_') => {
-    if (!tar.length) { return; }
+    if (Array.isArray(tar) && !tar.length) { return; }
+    if (!Array.isArray(tar)) { tar = [tar]; }
     let resolveType = Object.keys(tar[0]).filter(key => Reflect.has(typeCollection, key));
     tar.forEach(v => resolveType.forEach(key => v[`${prefix}${key}`] = v[key] === null ? null : typeCollection[key][v[key]]));
 };
