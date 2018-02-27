@@ -85,16 +85,41 @@ export const normalizeType = (tar,prefix = '$ref_') => {
 
 /* ----------------------------------------------- 日期切割 --------------------------------------------- */
 
+/*
+    Example:
+        Date => 2018-01-05 15:20:25
+    Normalize:
+        y_Date => 2018-01-05
+        t_Date => 15:20:25
+    @在table中，过长的日期显示为断层的两行，这里直接切割分两行展示
+*/
 export const normalizeDate = (tar, key) => {
+    if (!Array.isArray(key)) { key = [key]; }
     tar.forEach(v => {
-        let tmp = v[key].split(' ');
-        v[`$ref_${key}_day`] = tmp[0];
-        v[`$ref_${key}_time`] = tmp[1];
+        key.forEach(v2 => {
+            if (!v[v2]) { return; }
+            let tmp = v[v2].split(' ');
+            v['y_' + v2] = tmp[0];
+            v['t_' + v2] = tmp[1];
+        });
     });
 };
 
 /* ----------------------------------------------- element-ui表单正则 --------------------------------------------- */
 
+/*
+    @生成特定的正则函数
+    Example:
+        HTML:
+        <el-form-item label="" prop='Phone'>
+            <el-input v-model="form.Phone" placeholder='请输入电话号码'></el-input>
+        </el-form-item>
+        
+        JS:
+        rules:{
+            Phone:[{required: true, validator:elRegFnGenerator.phone_reg(),trigger: 'blur'}]
+        }
+*/
 export const elRegFnGenerator = {
     number_reg(m, n, msg) {
         const reg = new RegExp(`^[1-9]{1}[0-9]{0,${m-1}}(?:\\.[0-9]{1,${n}})?$|^0\\.[0-9]{1,${n}}$`);
@@ -152,6 +177,12 @@ export const elRegFnGenerator = {
 }
 
 /* ----------------------------------------------- 自定义table(略) --------------------------------------------- */
+
+/*
+    这个没啥用 
+    项目的建模table专用转换函数 
+    留作纪念
+*/
 export const transformRoomTable = (u) => {
     let curIter = 0,
         iter = -1,
