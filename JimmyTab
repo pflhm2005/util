@@ -1,0 +1,48 @@
+<template>
+    <div class="tab-container">
+        <div class="tab-content">
+            <span 
+            v-for="(item,index) in tabList" 
+            :key='index'
+            @click='changeTab(index)'
+             class="kx-tab"
+            :class='{on:index === tab_index}'>{{item}}</span>
+        </div>
+    </div>
+</template>
+<style lang="less">
+    .tab-container{
+        height: 64px;
+        border-bottom: 2px solid #f0f0f0;
+        .tab-content{
+            line-height: 62px;
+            padding-left: 20px;
+        }
+        .kx-tab{
+            height: 64px;
+            display: inline-block;
+            padding:0 20px;
+            cursor: pointer;
+            font-size: 16px;
+            &.on{
+                border-bottom:2px solid #508dff;
+            }
+        }
+    }
+</style>
+<script>
+export default {
+    props:['tabList'],
+    data(){
+        return {
+            tab_index:0,
+        }
+    },
+    methods:{
+        changeTab(i){
+            this.tab_index = i;
+            this.$emit('tab-click',i);
+        }
+    }
+}
+</script>
